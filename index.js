@@ -17,7 +17,85 @@ Everything is being displayed in the Console dev
 
 let humanScore = 0;
 let computerScore = 0;
+let draw = 0;
+let userInput;
+let roundsPlayed = 0;
+const rock = document.querySelector("#Rock");
+const paper = document.querySelector("#Paper");
+const scissors = document.querySelector("#Scissors");
+const para = document.querySelector("#para");
+const para2 = document.querySelector("#para2");
+const para3 = document.querySelector("#para3");
 
+
+
+
+function playGame(humanChoice){
+    if(roundsPlayed >= 5){
+        console.log("Game over! The Winner is: " + (humanScore > computerScore? "You!" : " the Computer!" ));
+        return;
+    }
+
+        const computerChoice = getComputerChoice();
+        para2.textContent ="Round " + (roundsPlayed + 1) + ": " +"The computer selected " + getComputerChoice() + " 🤖." ;
+        para3.textContent ="You selected " + humanChoice + "." ;
+
+        const result = playRound(computerChoice, humanChoice);
+        console.log(result)
+        roundsPlayed++;
+
+         if (roundsPlayed === 5) {
+        if (humanScore > computerScore) {
+            console.log("🎉 YOU WIN THE GAME! 🎉");
+        } else if (computerScore > humanScore) {
+            console.log("💻 COMPUTER WINS THE GAME 💻");
+        } else {
+            console.log("🤝 IT'S A TIE GAME! 🤝");
+        }
+    }
+
+    if(roundsPlayed < 5){
+        para.textContent ="Loading Result..."
+    }
+    else if (roundsPlayed === 5) {
+        if (humanScore > computerScore) {
+            para.textContent = "🎉 YOU WIN THE GAME! 🎉 Human Score: " + humanScore + "|| " + " Computer Score: " + computerScore + "|| " + " Draws: " + draw;
+        } else if (computerScore > humanScore) {
+            para.textContent ="💻 COMPUTER WINS THE GAME! 💻 Human Score: " + humanScore + "|| " + " Computer Score: " + computerScore + "|| " + " Draws: " + draw;
+        } else {
+            para.textContent ="🤝 IT'S A TIE GAME! 🤝 Human Score: " + humanScore + "|| " + " Computer Score: " + computerScore + "|| " + " Draws: " + draw;
+        }
+    setTimeout(resetGame, 3000);
+    }
+
+
+}
+rock.addEventListener("click" , function (){
+    playGame("rock");
+    
+
+});
+
+paper.addEventListener("click" , function (){
+    playGame("paper");
+    
+
+});
+
+scissors.addEventListener("click" , function (){
+    playGame("scissors");
+
+});
+
+
+function resetGame() {
+    humanScore = 0;
+    computerScore = 0;
+    roundsPlayed = 0;
+    draw = 0;
+    console.log("New game started! Make your choice.");
+    console.log("----------------------");
+}
 
 function getComputerChoice(){
     const randomNumber = Math.random() * 3 ;// Generates a random number between 1-3
@@ -31,31 +109,11 @@ function getComputerChoice(){
             return 'scissors'       
 }
 
-function getHumanChoice(){
-    let userInput = prompt("Enter Rock, Paper or Scissors: ", )
-        if (userInput === null ){
-            return "Game was cancelled by user."
-        }
-
-        userInput = userInput.toLowerCase(); // converts string to lowercase
-
-        if(userInput === "rock"){
-            return 'rock';
-        }
-        else if(userInput === "paper"){
-            return 'paper';
-        }
-        else if (userInput === 'scissors'){
-            return 'scissors';
-        }
-        else{
-         return "Not a valid input! Please enter Rock, Paper or Scissors"
-        }        
-}
 
 function playRound(computerSelection, humanSelection){
 
     if(computerSelection === humanSelection){
+        draw++;
         return("It's a tie")
     }
     else if(computerSelection === "rock" && humanSelection === "paper"){
@@ -87,33 +145,9 @@ function playRound(computerSelection, humanSelection){
         return undefined;
 }
 
-function playGame(){
-
-    for(let i = 0; i < 5; i++){
-    let currentComputerChoice = getComputerChoice();
-    let currentHumanChoice = getHumanChoice();
-    let round = i + 1;
-    console.log("round"+ round + ": " +"The computer's chose "  + currentComputerChoice);
-    console.log("round"+ round + ": " +"You selected " + currentHumanChoice)
-    playRound(currentComputerChoice, currentHumanChoice);
-     if(currentHumanChoice === null){
-        i--;
-        return "Invalid input"
-     }
-    }
-    if(computerScore > humanScore){
-        return("\nSorry you lost, The Computer won with " + computerScore + " points.")
-    }
-    else if(humanScore > computerScore){
-        return("\nYay you won! You have an overall of " + humanScore + " points.")
-    }
-    else if(computerScore  === humanScore){
-        return("\nIt's a tie")
-    }
-}
 
 
-console.log(playGame())
+
 
 /*
 //To save the user's scores
@@ -124,3 +158,5 @@ localStorage.setItem('computerScore', computerScore);
 humanScore = parseInt(localStorage.getItem('humanScore')) || 0;
 computerScore = parseInt(localStorage.getItem('computerScore')) || 0;
 */
+
+
